@@ -1,13 +1,50 @@
 # main.py
 import json
+import os
+import shutil
+
+# Colores ANSI para estética (compatibles con Windows 10+ y terminales modernos)
+class Colors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    BOLD = '\033[1m'
+    RESET = '\033[0m'
+
+
+def clear_screen():
+    try:
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
+    except Exception:
+        pass
+
+
 def menu():
-    print("\n--- SISTEMA DE GESTIÓN DE NOTAS ---")
-    print("1. Registrar Estudiante")
-    print("2. Ingresar Notas")
-    print("3. Calcular Promedio")
-    print("4. Generar Reporte")
-    print("5. Guardar y Salir")
-    return input("Seleccione una opción: ")
+    clear_screen()
+    width = shutil.get_terminal_size((80, 20)).columns
+    title = "SISTEMA DE GESTIÓN DE NOTAS"
+    print(Colors.BOLD + Colors.OKCYAN + title.center(width) + Colors.RESET)
+    print(Colors.OKBLUE + "=" * min(width, 60) + Colors.RESET)
+    print(f"{Colors.OKGREEN}1.{Colors.RESET} Registrar Estudiante")
+    print(f"{Colors.OKGREEN}2.{Colors.RESET} Ingresar Notas")
+    print(f"{Colors.OKGREEN}3.{Colors.RESET} Calcular Promedio")
+    print(f"{Colors.OKGREEN}4.{Colors.RESET} Generar Reporte")
+    print(f"{Colors.OKGREEN}5.{Colors.RESET} Guardar y Salir")
+    print(Colors.OKBLUE + "=" * min(width, 60) + Colors.RESET)
+    return input(Colors.BOLD + "Seleccione una opción: " + Colors.RESET)
+
+
+def pause():
+    try:
+        input(Colors.OKCYAN + "\nPresiona Enter para continuar..." + Colors.RESET)
+    except Exception:
+        pass
 
 
 
@@ -85,18 +122,23 @@ def main():
         
         if opcion == "1":
             registrar_estudiante(estudiantes)
+            pause()
         elif opcion == "2":
             ingresar_notas(estudiantes)
+            pause()
         elif opcion == "3":
             calcular_promedio(estudiantes)
+            pause()
         elif opcion == "4":
             generar_reporte(estudiantes)
+            pause()
         elif opcion == "5":
             guardar_datos(estudiantes)
             print("👋 Saliendo del sistema...")
             break
         else:
             print("⚠️ Opción no válida.")
+            pause()
 
 if __name__ == "__main__":
     main()
